@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="GunResource" load_steps=5 format=3 uid="uid://bquqqgw60kau"]
+
+[ext_resource type="Script" path="res://Godot-Gun-Manager/gun_resource/gun_resource.gd" id="1_73t3x"]
+[ext_resource type="Script" path="res://Godot-Gun-Manager/custom_behavior/custom_behavior.gd" id="1_lludd"]
+[ext_resource type="PackedScene" uid="uid://rohwjlxdmef2" path="res://Example Project/basic_bullet/projectile.tscn" id="2_d3yhy"]
+
+[sub_resource type="Resource" id="Resource_25f6h"]
+script = ExtResource("1_lludd")
+overide_base_behaviour = {
+"custom_destroy_gun": false,
+"custom_load_new_gun": false,
+"custom_process": false,
+"custom_ready": false,
+"custom_reload_begin": false,
+"custom_reload_end": false,
+"custom_reload_failed": false,
+"custom_shoot": false,
+"custom_shoot_failed": false
+}
+
+[resource]
+script = ExtResource("1_73t3x")
+gun_name = "test_gun"
+custom_behaviour_script = SubResource("Resource_25f6h")
+firerate = 0.1
+character_recoil = 100.0
+clip_size = 15
+reload_time = 1
+ammo_type = "universal"
+use_ammo = true
+projectile_scene = ExtResource("2_d3yhy")
+projectile_scale = 1.0
+projectile_speed = 75000.0
+projectile_range = 100000.0
+consistent_spread = false
+spread_range = 0.0
+projectile_quantity = 1
+burst_amount = 1
+burst_interval = 0.0
