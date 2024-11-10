@@ -3,7 +3,7 @@ class_name GunResource
 
 @export_group("General")
 @export var gun_name: String
-@export var custom_behaviour_script: CustomBehavior # Insert a CustomBehavior here, even if it is blank. Otherwise, it will cause a crash.
+@export var custom_behaviour_script: CustomResourceBehavior # Insert a CustomResourceBehavior here, even if it is blank. Otherwise, it will cause a crash.
 
 @export_group("Shooting")
 @export var attack_instance: AttackInstance
