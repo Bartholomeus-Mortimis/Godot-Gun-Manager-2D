@@ -1,6 +1,6 @@
 @tool
 extends Resource
-class_name CustomBehavior
+class_name CustomResourceBehavior
 
 
 @export var overide_base_behaviour: Dictionary = {
@@ -15,7 +15,7 @@ class_name CustomBehavior
 	"custom_process": false
 }
 
-# If you want to further customize the functions of a gun, the functions 
+# If you want to further customize the functions of a specific gun resource, the functions 
 # below serve as a way to run custom code upon certain events. By default, the custom
 # functions will run alongside the default ones, but if you want one or several custom
 # functions to replace the default one completely, set them to true in the

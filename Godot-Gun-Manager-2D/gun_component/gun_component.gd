@@ -5,6 +5,7 @@ class_name GunComponent
 @export var gun_resource: GunResource
 @export var gun_host: Node2D # The node that uses the component (Ex: The Player Character)
 @export var muzzle_position: Vector2
+@export var custom_component_behavior: CustomComponentBehavior = CustomComponentBehavior.new() # Insert a CustomComponentBehavior here, even if it is blank. Otherwise, it will cause a crash.
 
 @export_category("Active Settings") # These are meant to be controlled by others nodes in the scene (Like the main game script)
 @export var can_shoot: bool = true
@@ -59,6 +60,7 @@ func shoot_gun():
 					
 					
 					gun_resource.custom_behaviour_script.custom_shoot(gun_resource, gun_host)
+					custom_component_behavior.custom_shoot(self, gun_host)
 					
 					if b < gun_resource.burst_amount: # Do not cause delay on last burst
 						await get_tree().create_timer(gun_resource.burst_interval).timeout
@@ -73,8 +75,10 @@ func shoot_gun():
 				
 			else: # Not enough ammunition to shoot
 				gun_resource.custom_behaviour_script.custom_shoot_failed(gun_resource, gun_host)
+				custom_component_behavior.custom_shoot_failed(self, gun_host)
 		else:
 			gun_resource.custom_behaviour_script.custom_shoot(gun_resource, gun_host)
+			custom_component_behavior.custom_shoot(self, gun_host)
 
 func reload_gun():
 	if gun_resource and gun_host and gun_resource.use_ammo and can_reload and !is_shooting and !is_reloading: # Checks if reload is currently allowed
@@ -85,12 +89,15 @@ func reload_gun():
 				awaiting_firerate_cooldown = false
 				is_reloading = true
 				gun_resource.custom_behaviour_script.custom_reload_begin(gun_resource, gun_host)
+				custom_component_behavior.custom_reload_begin(self, gun_host)
 				await get_tree().create_timer(gun_resource.reload_time).timeout # Starts reload timer
 				reload_timer_timeout(reload_info) # Ends reload
 			else:
 				gun_resource.custom_behaviour_script.custom_reload_failed(gun_resource, gun_host)
+				custom_component_behavior.custom_reload_failed(self, gun_host)
 		else:
 			gun_resource.custom_behaviour_script.custom_reload_begin(gun_resource, gun_host)
+			custom_component_behavior.custom_reload_begin(self, gun_host)
 
 
 func reload_timer_timeout(reload_info: Dictionary) -> void:
@@ -101,23 +108,28 @@ func reload_timer_timeout(reload_info: Dictionary) -> void:
 			stored_ammo_types[gun_resource.ammo_type] = reload_info["ammo_stocked"]
 			
 			gun_resource.custom_behaviour_script.custom_reload_end(gun_resource, gun_host)
+			custom_component_behavior.custom_reload_end(self, gun_host)
 			
 			is_reloading = false
 		else:
 			gun_resource.custom_behaviour_script.custom_reload_end(gun_resource, gun_host)
+			custom_component_behavior.custom_reload_end(self, gun_host)
 
 func load_gun(new_gun: GunResource):
 	if !gun_resource.custom_behaviour_script.overide_base_behaviour["custom_load_new_gun"]:
 		
 		gun_resource.custom_behaviour_script.custom_destroy_gun(gun_resource, gun_host)
+		custom_component_behavior.custom_destroy_gun(self, gun_host)
 		ammo_in_clip = gun_resource.clip_size
 		
 		is_shooting = false
 		is_reloading = false
 		
 		gun_resource.custom_behaviour_script.custom_load_new_gun(gun_resource, gun_host, new_gun)
+		custom_component_behavior.custom_load_new_gun(self, gun_host, new_gun)
 	else:
 		gun_resource.custom_behaviour_script.custom_load_new_gun(gun_resource, gun_host, new_gun)
+		custom_component_behavior.custom_load_new_gun(self, gun_host, new_gun)
 
 
 # Additional Functions
@@ -157,4 +169,11 @@ func get_reload_info(ammo_left_in_clip: int, max_ammo_in_clip: int, ammo_stocked
 		return {"can_reload": false, "ammo_in_clip": ammo_left_in_clip, "ammo_stocked": ammo_stocked}
 
 func _ready():
-	load_gun(gun_resource)
+	if !gun_resource.custom_behaviour_script.overide_base_behaviour["custom_load_new_gun"]:
+		load_gun(gun_resource)
+		gun_resource.custom_behaviour_script.custom_load_new_gun(gun_resource, gun_host, gun_resource)
+		custom_component_behavior.custom_load_new_gun(self, gun_host, gun_resource)
+	else:
+		gun_resource.custom_behaviour_script.custom_load_new_gun(gun_resource, gun_host, gun_resource)
+		custom_component_behavior.custom_load_new_gun(self, gun_host, gun_resource)
+		
