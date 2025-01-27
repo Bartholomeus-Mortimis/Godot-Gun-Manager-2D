@@ -1,12 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://c3cg0xdm3p8mc"]
+[gd_scene load_steps=8 format=3 uid="uid://c3cg0xdm3p8mc"]
 
 [ext_resource type="Texture2D" uid="uid://ijaa6qv7edb" path="res://icon.svg" id="1_guwuf"]
 [ext_resource type="Script" path="res://Example Project/example_scene/example_scene.gd" id="1_ph08j"]
 [ext_resource type="Script" path="res://Godot-Gun-Manager/gun_component/gun_component.gd" id="2_u231u"]
 [ext_resource type="Resource" uid="uid://bquqqgw60kau" path="res://Example Project/new_resource.tres" id="3_cfn4l"]
+[ext_resource type="Script" path="res://Godot-Gun-Manager/custom_behavior/custom_component_behavior.gd" id="5_4nscg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sd0d2"]
 size = Vector2(118.435, 119.18)
+
+[sub_resource type="Resource" id="Resource_p0taq"]
+script = ExtResource("5_4nscg")
 
 [node name="ExampleScene" type="Node2D"]
 script = ExtResource("1_ph08j")
@@ -28,3 +32,4 @@ script = ExtResource("2_u231u")
 gun_resource = ExtResource("3_cfn4l")
 gun_host = NodePath("..")
 muzzle_position = Vector2(954.783, 514.59)
+custom_component_behavior = SubResource("Resource_p0taq")

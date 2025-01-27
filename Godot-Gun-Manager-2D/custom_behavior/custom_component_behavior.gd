@@ -1,6 +1,6 @@
 @tool
 extends Resource
-class_name CustomComponentBehavior
+class_name CustomComponentBehaviour
 
 # If you want to further customize the functions of the gun component, the functions 
 # below serve as a way to run custom code upon certain events.

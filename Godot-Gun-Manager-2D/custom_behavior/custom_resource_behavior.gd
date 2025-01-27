@@ -1,9 +1,8 @@
 @tool
 extends Resource
-class_name CustomResourceBehavior
+class_name CustomResourceBehaviour
 
-
-@export var overide_base_behaviour: Dictionary = {
+var overide_base_behaviour: Dictionary = {
 	"custom_shoot": false,
 	"custom_shoot_failed": false,
 	"custom_reload_begin": false,

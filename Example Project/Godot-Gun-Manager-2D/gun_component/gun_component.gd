@@ -5,7 +5,7 @@ class_name GunComponent
 @export var gun_resource: GunResource
 @export var gun_host: Node2D # The node that uses the component (Ex: The Player Character)
 @export var muzzle_position: Vector2
-@export var custom_component_behavior: CustomComponentBehavior = CustomComponentBehavior.new() # Insert a CustomComponentBehavior here, even if it is blank. Otherwise, it will cause a crash.
+@export var custom_component_behavior: CustomComponentBehaviour # Insert a CustomComponentBehavior here, even if it is blank. Otherwise, it will cause a crash.
 
 @export_category("Active Settings") # These are meant to be controlled by others nodes in the scene (Like the main game script)
 @export var can_shoot: bool = true
@@ -15,7 +15,7 @@ class_name GunComponent
 @export var infinite_ammo_stored: bool = true # If true, reloading will disregard stored ammo.
 @export var ammo_in_clip: int
 @export var stored_ammo_types: Dictionary = {
-	"universal": 100
+	"default": 100
 	# Add the ammo types you wish to use, all values must be intergers
 }
 
@@ -28,7 +28,7 @@ var awaiting_firerate_cooldown: bool = false # If the firerate cooldown timer is
 func shoot_gun():
 	
 	if gun_resource and gun_host and !is_shooting and !is_reloading and !awaiting_firerate_cooldown: # Check if shooting is possible
-		if !gun_resource.custom_behaviour_script.overide_base_behaviour["custom_shoot"]:
+		if !gun_resource.custom_resource_behaviour_script.overide_base_behaviour["custom_shoot"]:
 			
 			if ammo_in_clip > 0 or !gun_resource.use_ammo: # Check ammunition
 				
@@ -59,7 +59,7 @@ func shoot_gun():
 							gun_host.velocity += Vector2(-gun_resource.character_recoil, 0).rotated(gun_host.rotation)
 					
 					
-					gun_resource.custom_behaviour_script.custom_shoot(gun_resource, gun_host)
+					gun_resource.custom_resource_behaviour_script.custom_shoot(gun_resource, gun_host)
 					custom_component_behavior.custom_shoot(self, gun_host)
 					
 					if b < gun_resource.burst_amount: # Do not cause delay on last burst
@@ -74,61 +74,61 @@ func shoot_gun():
 					awaiting_firerate_cooldown = false
 				
 			else: # Not enough ammunition to shoot
-				gun_resource.custom_behaviour_script.custom_shoot_failed(gun_resource, gun_host)
+				gun_resource.custom_resource_behaviour_script.custom_shoot_failed(gun_resource, gun_host)
 				custom_component_behavior.custom_shoot_failed(self, gun_host)
 		else:
-			gun_resource.custom_behaviour_script.custom_shoot(gun_resource, gun_host)
+			gun_resource.custom_resource_behaviour_script.custom_shoot(gun_resource, gun_host)
 			custom_component_behavior.custom_shoot(self, gun_host)
 
 func reload_gun():
 	if gun_resource and gun_host and gun_resource.use_ammo and can_reload and !is_shooting and !is_reloading: # Checks if reload is currently allowed
-		if !gun_resource.custom_behaviour_script.overide_base_behaviour["custom_reload_begin"]:
+		if !gun_resource.custom_resource_behaviour_script.overide_base_behaviour["custom_reload_begin"]:
 			var reload_info: Dictionary = get_reload_info(ammo_in_clip, gun_resource.clip_size, stored_ammo_types[gun_resource.ammo_type])
 			
 			if reload_info["can_reload"]:
 				awaiting_firerate_cooldown = false
 				is_reloading = true
-				gun_resource.custom_behaviour_script.custom_reload_begin(gun_resource, gun_host)
+				gun_resource.custom_resource_behaviour_script.custom_reload_begin(gun_resource, gun_host)
 				custom_component_behavior.custom_reload_begin(self, gun_host)
 				await get_tree().create_timer(gun_resource.reload_time).timeout # Starts reload timer
 				reload_timer_timeout(reload_info) # Ends reload
 			else:
-				gun_resource.custom_behaviour_script.custom_reload_failed(gun_resource, gun_host)
+				gun_resource.custom_resource_behaviour_script.custom_reload_failed(gun_resource, gun_host)
 				custom_component_behavior.custom_reload_failed(self, gun_host)
 		else:
-			gun_resource.custom_behaviour_script.custom_reload_begin(gun_resource, gun_host)
+			gun_resource.custom_resource_behaviour_script.custom_reload_begin(gun_resource, gun_host)
 			custom_component_behavior.custom_reload_begin(self, gun_host)
 
 
 func reload_timer_timeout(reload_info: Dictionary) -> void:
 	if is_reloading: # Finish the reload
-		if !gun_resource.custom_behaviour_script.overide_base_behaviour["custom_reload_end"]:
+		if !gun_resource.custom_resource_behaviour_script.overide_base_behaviour["custom_reload_end"]:
 			
 			ammo_in_clip = reload_info["ammo_in_clip"]
 			stored_ammo_types[gun_resource.ammo_type] = reload_info["ammo_stocked"]
 			
-			gun_resource.custom_behaviour_script.custom_reload_end(gun_resource, gun_host)
+			gun_resource.custom_resource_behaviour_script.custom_reload_end(gun_resource, gun_host)
 			custom_component_behavior.custom_reload_end(self, gun_host)
 			
 			is_reloading = false
 		else:
-			gun_resource.custom_behaviour_script.custom_reload_end(gun_resource, gun_host)
+			gun_resource.custom_resource_behaviour_script.custom_reload_end(gun_resource, gun_host)
 			custom_component_behavior.custom_reload_end(self, gun_host)
 
 func load_gun(new_gun: GunResource):
-	if !gun_resource.custom_behaviour_script.overide_base_behaviour["custom_load_new_gun"]:
+	if !gun_resource.custom_resource_behaviour_script.overide_base_behaviour["custom_load_new_gun"]:
 		
-		gun_resource.custom_behaviour_script.custom_destroy_gun(gun_resource, gun_host)
+		gun_resource.custom_resource_behaviour_script.custom_destroy_gun(gun_resource, gun_host)
 		custom_component_behavior.custom_destroy_gun(self, gun_host)
 		ammo_in_clip = gun_resource.clip_size
 		
 		is_shooting = false
 		is_reloading = false
 		
-		gun_resource.custom_behaviour_script.custom_load_new_gun(gun_resource, gun_host, new_gun)
+		gun_resource.custom_resource_behaviour_script.custom_load_new_gun(gun_resource, gun_host, new_gun)
 		custom_component_behavior.custom_load_new_gun(self, gun_host, new_gun)
 	else:
-		gun_resource.custom_behaviour_script.custom_load_new_gun(gun_resource, gun_host, new_gun)
+		gun_resource.custom_resource_behaviour_script.custom_load_new_gun(gun_resource, gun_host, new_gun)
 		custom_component_behavior.custom_load_new_gun(self, gun_host, new_gun)
 
 
@@ -169,11 +169,11 @@ func get_reload_info(ammo_left_in_clip: int, max_ammo_in_clip: int, ammo_stocked
 		return {"can_reload": false, "ammo_in_clip": ammo_left_in_clip, "ammo_stocked": ammo_stocked}
 
 func _ready():
-	if !gun_resource.custom_behaviour_script.overide_base_behaviour["custom_load_new_gun"]:
+	if !gun_resource.custom_resource_behaviour_script.overide_base_behaviour["custom_load_new_gun"]:
 		load_gun(gun_resource)
-		gun_resource.custom_behaviour_script.custom_load_new_gun(gun_resource, gun_host, gun_resource)
+		gun_resource.custom_resource_behaviour_script.custom_load_new_gun(gun_resource, gun_host, gun_resource)
 		custom_component_behavior.custom_load_new_gun(self, gun_host, gun_resource)
 	else:
-		gun_resource.custom_behaviour_script.custom_load_new_gun(gun_resource, gun_host, gun_resource)
+		gun_resource.custom_resource_behaviour_script.custom_load_new_gun(gun_resource, gun_host, gun_resource)
 		custom_component_behavior.custom_load_new_gun(self, gun_host, gun_resource)
 		

@@ -3,17 +3,17 @@ class_name GunResource
 
 @export_group("General")
 @export var gun_name: String
-@export var custom_behaviour_script: CustomResourceBehavior # Insert a CustomResourceBehavior here, even if it is blank. Otherwise, it will cause a crash.
+@export var custom_resource_behaviour_script: CustomResourceBehaviour # Insert a CustomResourceBehavior here, even if it is blank. Otherwise, it will cause a crash.
 
 @export_group("Shooting")
 @export var attack_instance: AttackInstance
-@export var firerate: float = 1
-@export var character_recoil: float # only applies if host is CharacterBody2D
+@export var firerate: float = 1 
+@export var character_recoil: float # Recoil only applies if host is CharacterBody2D
 
 @export_group("Ammunition")
 @export var clip_size: int
-@export var reload_time: int
-@export var ammo_type: String
+@export var reload_time: float
+@export var ammo_type: String = 'default'
 @export var use_ammo: bool = false # If false, the gun will have infinite clip size.
 
 @export_group("Projectile")
@@ -25,7 +25,6 @@ class_name GunResource
 @export var projectile_range: float = 100000.0
 
 @export_group("Advanced Settings")
-
 @export_subgroup("Projectile Spread")
 @export var consistent_spread: bool = false # If true, projectiles will keep equal relative deviation when fired.
 @export var spread_range: float = 0.0 # The maximum deviation of projectiles

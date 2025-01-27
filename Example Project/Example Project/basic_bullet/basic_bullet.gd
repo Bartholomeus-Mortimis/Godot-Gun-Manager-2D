@@ -6,18 +6,17 @@ class_name BasicBullet
 var direction: Vector2
 var starting_position: Vector2
 
-func _ready() -> void:
+func _ready() -> void:	
 	starting_position = global_position
-	scale = Vector2(gun_resource.projectile_scale, gun_resource.projectile_scale)
+	scale *= Vector2(gun_resource.projectile_scale, gun_resource.projectile_scale)
 
 func _physics_process(delta: float) -> void: 
-	
-	if global_position.distance_to(starting_position) > gun_resource.projectile_range:
-		queue_free()
 	
 	if base_sprite.sprite_frames.animations.has("default"):
 		base_sprite.play("default")
 	
+	if global_position.distance_to(starting_position) > gun_resource.projectile_range:
+		queue_free()
 	
 	direction = Vector2(gun_resource.projectile_speed, 0).rotated(rotation)
 	
