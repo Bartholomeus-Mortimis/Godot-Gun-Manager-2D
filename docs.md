@@ -13,10 +13,10 @@ To add to your game, simply drag the folder into your project and repair any dep
 > A list of stats and characteristics that make up an individual gun. Read by GunComponent.
 
 #### GunComponent
-> The node that allows the gun to work. Facilitates the shooting + reloading logic, spawning projectiles and ammo management. Uses a GunResource as a guidebook on how said actions are to be done.
+> The node that allows the gun to work. Facilitates the shooting + reloading logic, spawning projectiles and ammo management. Uses a GunResource as a guidebook on how said actions are to be done. Can be extended to run custom code when these actions are performed.
 
-#### CustomResourceBehaviour + CustomComponentBehaviour
-> Scripts that can be easily extended, modified, and attached to GunResource and GunComponent respectivelly. Allows for custom code to be run during certain actions (Shoot, Reload, etc.)
+#### CustomResourceBehaviour
+> Resource that is attahced to a GunResource, allows for custom code to be executed when a GunComponent loaded with said GunResource performs certain actions (reloading, shooting, loading new gun, etc.). Theses custom function can be set to override the GunComponent's code, or be called alongside it.
 
 <br>
 
@@ -28,7 +28,10 @@ To add to your game, simply drag the folder into your project and repair any dep
 > Used for organisation. Can be left blank.
 
 #### custom_resource_behaviour_script (CustomResourceBehavior)
-> References a CustomResourceBehaviour to allow for further customization. Will cause a crash if left blank.
+> References a CustomResourceBehaviour to allow for further customization.
+
+> [!WARNING]
+> custom_resource_behaviour_script <b>cannot</b> be left blank! Otherwise, a crash will occur. Add a CustomResourceBehaviour, even if no code is written to it. 
 
 <br>
 
@@ -120,6 +123,9 @@ To add to your game, simply drag the folder into your project and repair any dep
 #### muzzle_position (Vector2)
 > The position at which projectiles will spawn.
 
+#### muzzle_host_node (Node2D)
+> The node that the gun will use to determine the orientation of the shot projectile. Used the global_rotation of the given node.
+
 #### custom_component_behavior (CustomComponentBehaviour)
 > References a CustomComponentBehaviour to allow for further customization. Will cause a crash if left blank.
 
@@ -149,6 +155,6 @@ To add to your game, simply drag the folder into your project and repair any dep
 > Reloads the gun. Will run all checks to ensure reloading is possible within the method (No checks are needed).
 
 #### load_gun(new_gun: GunResource)
-> Swaps the existing gun with (or adds one) with new_gun.
+> Adds new_gun / Swaps the existing gun with new_gun.
 
 <br>
