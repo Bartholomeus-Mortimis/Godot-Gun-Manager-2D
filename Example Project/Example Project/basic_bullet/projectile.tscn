@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://rohwjlxdmef2"]
 
-[ext_resource type="Script" path="res://Example Project/basic_bullet/basic_bullet.gd" id="1_txcyj"]
+[ext_resource type="Script" uid="uid://dxde1jrbtxowd" path="res://Example Project/basic_bullet/basic_bullet.gd" id="1_txcyj"]
 [ext_resource type="SpriteFrames" uid="uid://b0obkvyevehh2" path="res://Example Project/basic_bullet/basic_bullet.tres" id="2_q3o8o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u0idv"]

@@ -11,7 +11,8 @@ config_version=5
 [application]
 
 config/name="Godot-Gun-Manager-2D"
-config/features=PackedStringArray("4.3", "GL Compatibility")
+run/main_scene="uid://c3cg0xdm3p8mc"
+config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [display]

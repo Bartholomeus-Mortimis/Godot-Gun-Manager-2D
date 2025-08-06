@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="GunResource" load_steps=7 format=3 uid="uid://bjlqdgo3fxgjb"]
+
+[ext_resource type="Script" uid="uid://cphue3hrubs2s" path="res://Godot-Gun-Manager-2D/gun_resource/gun_resource.gd" id="1_5pqkn"]
+[ext_resource type="Script" uid="uid://d27nsy4hli8go" path="res://Godot-Gun-Manager-2D/gun_resource/custom_resource_behavior.gd" id="1_cgiox"]
+[ext_resource type="Script" uid="uid://c7c1jq6x3askh" path="res://Godot-Gun-Manager-2D/other_scripts/attack_instance.gd" id="1_wdt5m"]
+[ext_resource type="PackedScene" uid="uid://rohwjlxdmef2" path="res://Example Project/basic_bullet/projectile.tscn" id="2_wdt5m"]
+
+[sub_resource type="Resource" id="Resource_do8vw"]
+script = ExtResource("1_wdt5m")
+attack_damage = 0.0
+metadata/_custom_type_script = "uid://c7c1jq6x3askh"
+
+[sub_resource type="Resource" id="Resource_cgiox"]
+script = ExtResource("1_cgiox")
+metadata/_custom_type_script = "uid://d27nsy4hli8go"
+
+[resource]
+script = ExtResource("1_5pqkn")
+gun_name = "Example Gun"
+custom_resource_behaviour_script = SubResource("Resource_cgiox")
+attack_instance = SubResource("Resource_do8vw")
+firerate = 0.1
+character_recoil = 100.0
+clip_size = 0
+reload_time = 0.0
+ammo_type = "default"
+use_ammo = false
+projectile_scene = ExtResource("2_wdt5m")
+projectile_scale = 1.0
+projectile_speed = 75000.0
+projectile_range = 100000.0
+consistent_spread = false
+spread_range = 0.0
+projectile_quantity = 1
+burst_amount = 1
+burst_interval = 0.0
+metadata/_custom_type_script = "uid://cphue3hrubs2s"
